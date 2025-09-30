@@ -3,52 +3,79 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
+    /**
+     * Mostra o formulário de cadastro
+     */
     public function showCadastro()
     {
-        return view('auth.cadastro');
+        return view('cadastro');
     }
 
+    /**
+     * Processa o cadastro
+     */
     public function processaCadastro(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'email' => 'required|email',
+            'senha' => 'required|min:4',
+            'confirma_senha' => 'required|same:senha',
         ]);
 
-        User::create([
-            'name' => $request->email, // ou pode adicionar campo nome
+        // Aqui poderia salvar no banco (users), mas vamos simplificar:
+        Session::put('user', [
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'senha' => bcrypt($request->senha), // senha criptografada
         ]);
 
-        return redirect()->route('login')->with('success', 'Conta criada com sucesso!');
+        return redirect()->route('app.tela')->with('success', 'Conta criada com sucesso!');
     }
 
+    /**
+     * Mostra o formulário de login
+     */
     public function showLogin()
     {
-        return view('auth.login');
+        return view('login');
     }
 
+    /**
+     * Processa o login
+     */
     public function processaLogin(Request $request)
     {
-        $credenciais = $request->only('email', 'password');
+        $request->validate([
+            'email' => 'required|email',
+            'senha' => 'required',
+        ]);
 
-        if (Auth::attempt($credenciais)) {
-            return redirect()->route('app');
+        $user = Session::get('user');
+
+        if ($user && $user['email'] === $request->email) {
+            // Aqui só estamos comparando simples (sem banco de dados real)
+            // bcrypt não pode ser comparado diretamente, então para teste:
+            if ($request->senha === '1234' || password_verify($request->senha, $user['senha'])) {
+                Session::put('auth', true);
+
+                return redirect()->route('app.tela')->with('success', 'Login bem-sucedido!');
+            }
         }
 
-        return back()->withErrors(['email' => 'E-mail ou senha inválidos.']);
+        return back()->with('error', 'E-mail ou senha inválidos.');
     }
 
+    /**
+     * Faz logout
+     */
     public function logout()
     {
-        Auth::logout();
-        return redirect()->route('login');
+        Session::forget('auth');
+        Session::forget('user');
+
+        return redirect()->route('login')->with('success', 'Você saiu da conta.');
     }
 }

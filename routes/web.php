@@ -24,3 +24,7 @@ Route::get('/app', [PageController::class, 'appTela'])->name('app.tela');
 Route::get('/app', [TarefaController::class, 'index'])->name('app.tela');
 Route::get('/tarefa/nova', [TarefaController::class, 'create'])->name('tarefa.nova');
 Route::post('/tarefa/salvar', [TarefaController::class, 'store'])->name('tarefa.salvar');
+
+Route::get('/tarefa', [TarefaController::class, 'create'])->name('tarefa.create');
+Route::post('/tarefa', [TarefaController::class, 'store'])->name('tarefa.store');
+Route::get('/app', [TarefaController::class, 'index'])->name('app.index');

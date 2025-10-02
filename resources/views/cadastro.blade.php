@@ -25,6 +25,11 @@
       <img src="{{ asset('Image/Infinite.png') }}" alt="Logo Infinite">
     </div>
     <h2>Crie sua conta</h2>
+
+    @if($errors->any())
+      <p style="color:red">{{ $errors->first() }}</p>
+    @endif
+
     <form action="{{ route('cadastro.processa') }}" method="POST">
       @csrf
       <input type="email" name="email" placeholder="E-mail" required>

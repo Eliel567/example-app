@@ -41,10 +41,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::middleware('auth.session')->group(function () {
 
-    // Tela do App (lista tarefas)
+    // Tela do App (lista de tarefas)
     Route::get('/app', [TarefaController::class, 'index'])->name('app.index');
 
-    // Tarefas
+    // Tarefas 
     Route::get('/tarefa/nova', [TarefaController::class, 'create'])->name('tarefa.nova');
     Route::post('/tarefa/salvar', [TarefaController::class, 'store'])->name('tarefa.salvar');
 });

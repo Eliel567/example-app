@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tarefa;
+use Illuminate\Support\Facades\Auth;
 
 class TarefaController extends Controller
 {
     public function index()
     {
-        $tarefas = Tarefa::all();
+        $tarefas = Tarefa::where('user_id', Auth::id())->get();
         return view('app_tela', compact('tarefas'));
     }
 
@@ -21,15 +22,16 @@ class TarefaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => 'required',
-            'descricao' => 'required'
+            'titulo' => 'required|string|max:255',
+            'prazo'  => 'nullable|date',
         ]);
 
         Tarefa::create([
-            'titulo' => $request->titulo,
-            'descricao' => $request->descricao
+            'user_id' => Auth::id(),
+            'titulo'  => $request->titulo,
+            'prazo'   => $request->prazo,
         ]);
 
-        return redirect()->route('app.index')->with('success', 'Tarefa criada com sucesso!');
+        return redirect()->route('app.index')->with('success', 'Tarefa adicionada com sucesso!');
     }
 }

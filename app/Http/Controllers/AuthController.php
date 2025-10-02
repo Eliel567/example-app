@@ -3,76 +3,64 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Mostra o formulário de cadastro
-     */
     public function showCadastro()
     {
         return view('cadastro');
     }
 
-    /**
-     * Processa o cadastro
-     */
     public function processaCadastro(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'senha' => 'required|min:4|confirmed', 
-            // usa "senha_confirmation" no form
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        // Salva o usuário na sessão
-        Session::put('user', [
-            'email' => $request->email,
-            'senha' => password_hash($request->senha, PASSWORD_DEFAULT), // gera hash seguro
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('login')->with('success', 'Conta criada com sucesso! Faça login para continuar.');
+        Auth::login($user);
+
+        return redirect()->route('app.index')->with('success', 'Cadastro realizado com sucesso!');
     }
 
-    /**
-     * Mostra o formulário de login
-     */
     public function showLogin()
     {
         return view('login');
     }
 
-    /**
-     * Processa o login
-     */
     public function processaLogin(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'senha' => 'required',
+        $credenciais = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
-        $user = Session::get('user');
-
-        if ($user && $user['email'] === $request->email) {
-            if (password_verify($request->senha, $user['senha'])) {
-                Session::put('auth', true);
-                return redirect()->route('app.index')->with('success', 'Login bem-sucedido!');
-            }
+        if (Auth::attempt($credenciais)) {
+            $request->session()->regenerate();
+            return redirect()->route('app.index')->with('success', 'Login realizado com sucesso!');
         }
 
-        return back()->withErrors(['error' => 'E-mail ou senha inválidos.']);
+        return back()->withErrors([
+            'email' => 'Credenciais inválidas',
+        ]);
     }
 
-    /**
-     * Faz logout
-     */
-    public function logout()
+    public function logout(Request $request)
     {
-        Session::forget('auth');
-        Session::forget('user');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Você saiu da conta.');
+        return redirect()->route('login')->with('success', 'Logout realizado com sucesso!');
     }
 }

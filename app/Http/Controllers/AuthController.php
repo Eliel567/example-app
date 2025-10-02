@@ -22,17 +22,17 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'senha' => 'required|min:4',
-            'confirma_senha' => 'required|same:senha',
+            'senha' => 'required|min:4|confirmed', 
+            // usa "senha_confirmation" no form
         ]);
 
-        // Aqui poderia salvar no banco (users), mas vamos simplificar:
+        // Salva o usuário na sessão
         Session::put('user', [
             'email' => $request->email,
-            'senha' => bcrypt($request->senha), // senha criptografada
+            'senha' => password_hash($request->senha, PASSWORD_DEFAULT), // gera hash seguro
         ]);
 
-        return redirect()->route('app.tela')->with('success', 'Conta criada com sucesso!');
+        return redirect()->route('login')->with('success', 'Conta criada com sucesso! Faça login para continuar.');
     }
 
     /**
@@ -56,16 +56,13 @@ class AuthController extends Controller
         $user = Session::get('user');
 
         if ($user && $user['email'] === $request->email) {
-            // Aqui só estamos comparando simples (sem banco de dados real)
-            // bcrypt não pode ser comparado diretamente, então para teste:
-            if ($request->senha === '1234' || password_verify($request->senha, $user['senha'])) {
+            if (password_verify($request->senha, $user['senha'])) {
                 Session::put('auth', true);
-
-                return redirect()->route('app.tela')->with('success', 'Login bem-sucedido!');
+                return redirect()->route('app.index')->with('success', 'Login bem-sucedido!');
             }
         }
 
-        return back()->with('error', 'E-mail ou senha inválidos.');
+        return back()->withErrors(['error' => 'E-mail ou senha inválidos.']);
     }
 
     /**

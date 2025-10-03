@@ -33,8 +33,8 @@
     <form action="{{ route('cadastro.processa') }}" method="POST">
       @csrf
       <input type="email" name="email" placeholder="E-mail" required>
-      <input type="password" name="senha" placeholder="Crie sua senha" required>
-      <input type="password" name="senha_confirmation" placeholder="Repita sua senha" required>
+      <input type="password" name="password" placeholder="Crie sua senha" required>
+      <input type="password" name="password_confirmation" placeholder="Repita sua senha" required>
       <button type="submit">Criar Conta</button>
     </form>
   </div>

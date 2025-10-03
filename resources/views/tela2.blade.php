@@ -26,12 +26,13 @@
       justify-content:center;
     }
     .wrap{ width:100%; max-width:var(--maxw); padding: 40px; }
-    .brand{ display:flex; gap:12px; align-items:center; margin-bottom: 24px; }
+
+    .brand{ display:flex; gap:12px; align-items:center; margin-bottom: 24px; justify-content: center; }
     .brand__title{ font-weight: 800; font-size: clamp(34px, 5vw, 56px); color:black; }
     .brand__icon{ height:40px; width:auto; }
-    .hero{ display:grid; grid-template-columns: 1.15fr .85fr; gap: 32px; align-items:center; }
+    .hero{ display:grid; grid-template-columns: 1.15fr .85fr; gap: 100px; align-items:center; }
     .hero__copy h2{ margin:0 0 8px 0; font-weight: 800; font-size: 40px; color:#000; }
-    .hero__copy p{ margin:0; font-weight: 800; font-size: 24px; color:#000; }
+    .hero__copy p{ margin:0; font-weight: 800; font-size: 24px; color:#000;  }
     .cta{ margin-top: 28px; display:flex; gap: 24px; flex-wrap: wrap; }
     .btn{ border:0; border-radius: 999px; padding: 16px 26px; font-weight: 600; font-size: 18px;
       background: var(--btn-bg); color: var(--btn-text); text-decoration:none;
@@ -53,12 +54,13 @@
       <h1 class="brand__title">Infinite</h1>
       <img class="brand__icon" src="{{ asset('Image/Infinite.png') }}" alt="Símbolo do infinito">
     </div>
+    
 
     <section class="hero">
-      <div class="hero__copy">
-        <h2>Simples, flexível e poderoso.</h2>
-        <p>Mantenha tudo em um só lugar.</p>
-        <div class="cta">
+        <div class="hero__copy">
+        <h2>Simples, flexível e poderoso.</h2>
+        <p>Mantenha suas tarefas, projetos e metas em um só lugar. Organize seu dia, alcance sua produtividade máxima.</p> 
+        <div class="cta">
           <a class="btn" href="{{ route('login') }}">Iniciar Sessão</a>
           <a class="btn" href="{{ route('cadastro') }}">Criar Conta</a>
         </div>

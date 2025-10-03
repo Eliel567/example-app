@@ -9,15 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
+  // ... (cabeçalho)
+
+public function up(): void
 {
     Schema::create('tarefas', function (Blueprint $table) {
         $table->id();
+        
+        // ADICIONE ESTA LINHA para criar a chave estrangeira para o usuário
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        
         $table->string('titulo');
         $table->date('prazo')->nullable();
         $table->timestamps();
     });
 }
+
+// ... (método down() não muda)
 
 
     /**

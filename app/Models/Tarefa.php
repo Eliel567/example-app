@@ -12,20 +12,30 @@ class Tarefa extends Model
 
     /**
      * Os atributos que são mass assignable (atribuíveis em massa).
-     * É CRUCIAL incluir o 'user_id' aqui, pois ele é salvo via Tarefa::create().
      */
     protected $fillable = [
-        'user_id', // Adicionado: Para ligar a tarefa ao usuário.
+        'user_id', 
         'titulo',
         'prazo',
-        // Se você tiver um campo 'status', adicione-o aqui também.
+        'concluida', // NOVO: Campo para controlar o status da tarefa
     ];
 
-    // Se a sua tabela se chama 'tarefas' (padrão do Laravel), você não precisa desta linha.
-    // protected $table = 'tarefas'; 
+    /**
+     * Os atributos que devem ser convertidos para tipos nativos.
+     */
+    protected $casts = [
+        'prazo' => 'date',       // Opcional: Garante que 'prazo' é um objeto de data
+        'concluida' => 'boolean', // NOVO: Garante que 'concluida' seja tratado como booleano (true/false)
+    ];
     
-    // Opcional: Adicionar o relacionamento com o User
-    // Isso permite que você acesse o dono da tarefa via $tarefa->user.
+    // Opcional: Adicionar um valor padrão para 'concluida' se não for passado no create
+    protected $attributes = [
+        'concluida' => false,
+    ];
+
+    /**
+     * Relacionamento: Uma tarefa pertence a um usuário.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

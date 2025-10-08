@@ -8,54 +8,110 @@ use Illuminate\Support\Facades\Auth;
 
 class TarefaController extends Controller
 {
-    public function index()
+    /**
+     * Exibe a lista de tarefas, permitindo filtrar por status.
+     */
+    public function index(Request $request)
     {
-        // Busca tarefas APENAS do usuário logado
-        $tarefas = Tarefa::where('user_id', Auth::id())->get();
-        // Retorna a tela principal com a lista de tarefas
-        return view('app_tela', compact('tarefas'));
+        // 1. Inicia a query buscando apenas as tarefas do usuário logado
+        $query = Tarefa::where('user_id', Auth::id());
+
+        // 2. Aplica filtro de status, se presente na requisição (URL)
+        $status = $request->input('status');
+
+        if ($status === 'pendente') {
+            $query->where('concluida', false);
+        } elseif ($status === 'concluida') {
+            $query->where('concluida', true);
+        }
+
+        // 3. Aplica a ordenação: Pendentes primeiro, depois por Prazo, e por fim por data de criação.
+        $tarefas = $query->orderBy('concluida')
+                         ->orderBy('prazo')
+                         ->orderBy('created_at', 'desc') // Ordena por data de criação mais recente
+                         ->get();
+        
+        // Passa o status atual do filtro para a view
+        return view('app_tela', compact('tarefas', 'status'));
     }
+
+    // Os métodos 'create', 'store', 'edit', 'update', 'toggleConcluida' e 'destroy' permanecem iguais.
 
     public function create()
     {
-        // O Laravel busca 'resources/views/tarefa.blade.php'
         return view('tarefa'); 
     }
 
     public function store(Request $request)
     {
-        // Validação dos dados do formulário
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'prazo'  => 'nullable|date',
+            'titulo'    => 'required|string|max:255',
+            'descricao' => 'nullable|string|max:1000',
+            'prazo'     => 'nullable|date',
         ]);
 
-        // Cria e salva a nova tarefa no banco de dados
         Tarefa::create([
-            'user_id' => Auth::id(), // Associa ao usuário logado
-            'titulo'  => $request->titulo,
-            'prazo'   => $request->prazo,
+            'user_id'   => Auth::id(), 
+            'titulo'    => $request->titulo,
+            'descricao' => $request->descricao,
+            'prazo'     => $request->prazo,
+            'concluida' => false,
         ]);
 
-        // Redireciona para a tela principal (index) com mensagem de sucesso
         return redirect()->route('app.index')->with('success', 'Tarefa adicionada com sucesso!');
     }
     
-    /**
-     * Remove a tarefa especificada do armazenamento.
-     */
+    public function edit(Tarefa $tarefa)
+    {
+        if ($tarefa->user_id !== Auth::id()) {
+            return redirect()->route('app.index')->with('error', 'Você não tem permissão para editar esta tarefa.');
+        }
+        return view('tarefa', compact('tarefa'));
+    }
+
+    public function update(Request $request, Tarefa $tarefa)
+    {
+        if ($tarefa->user_id !== Auth::id()) {
+            return redirect()->route('app.index')->with('error', 'Você não tem permissão para atualizar esta tarefa.');
+        }
+
+        $request->validate([
+            'titulo'    => 'required|string|max:255',
+            'descricao' => 'nullable|string|max:1000',
+            'prazo'     => 'nullable|date',
+        ]);
+
+        $tarefa->update([
+            'titulo'    => $request->titulo,
+            'descricao' => $request->descricao,
+            'prazo'     => $request->prazo,
+        ]);
+
+        return redirect()->route('app.index')->with('success', 'Tarefa atualizada com sucesso!');
+    }
+
+    public function toggleConcluida(Tarefa $tarefa)
+    {
+        if ($tarefa->user_id !== Auth::id()) {
+            return redirect()->route('app.index')->with('error', 'Você não tem permissão para alterar o status desta tarefa.');
+        }
+
+        $novoStatus = !$tarefa->concluida;
+        $tarefa->update(['concluida' => $novoStatus]);
+        
+        $mensagem = $novoStatus ? 'Tarefa marcada como concluída!' : 'Tarefa reaberta.';
+
+        return redirect()->route('app.index')->with('success', $mensagem);
+    }
+
     public function destroy(Tarefa $tarefa)
     {
-        // 1. Garante que apenas o DONO da tarefa possa deletá-la
         if ($tarefa->user_id !== Auth::id()) {
-            // Se o ID do usuário logado não for o mesmo do dono da tarefa, nega o acesso
             return redirect()->route('app.index')->with('error', 'Você não tem permissão para deletar esta tarefa.');
         }
 
-        // 2. Deleta a tarefa
         $tarefa->delete();
 
-        // 3. Redireciona com mensagem de sucesso
         return redirect()->route('app.index')->with('success', 'Tarefa excluída com sucesso!');
     }
 }

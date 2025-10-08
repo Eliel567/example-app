@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root{
+    :root {
       --bg: #1980BA;
       --text: #0A0A0A;
       --btn-bg: #FFFFFF;
@@ -16,15 +16,23 @@
       --card-shadow: 0 10px 30px rgba(0,0,0,.20);
       --maxw: 1024px;
     }
-    body{
-      margin:0;
+
+    body {
+      margin: 0;
       font-family: Inter, system-ui, Arial, sans-serif;
       background: var(--bg);
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+<<<<<<< HEAD
+
+    .wrap {
+      width: 100%;
+      max-width: var(--maxw);
+      padding: 40px;
+=======
     .wrap{ width:100%; max-width:var(--maxw); padding: 40px; }
 
     .brand{ display:flex; gap:12px; align-items:center; margin-bottom: 24px; justify-content: center; }
@@ -38,14 +46,111 @@
       background: var(--btn-bg); color: var(--btn-text); text-decoration:none;
       display:inline-flex; align-items:center; justify-content:center; min-width: 200px;
       box-shadow: var(--btn-shadow); cursor:pointer; transition: 0.2s;
+>>>>>>> 014e2af1203aec2a35905e02c7c9f7e9c18df02f
     }
-    .btn:hover{ opacity:.9 }
-    .hero__art{ justify-self:end; width: min(520px, 100%); aspect-ratio: 4 / 5; border-radius: 24px;
-      background: rgba(255,255,255,.06); box-shadow: var(--card-shadow); display:flex;
-      align-items:center; justify-content:center; overflow:hidden;
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+      justify-content: center;
     }
-    .hero__art img{ width:100%; height:100%; object-fit:contain; }
-    @media (max-width: 860px){ .hero{ grid-template-columns:1fr; text-align:center; } .cta{ justify-content:center; } }
+
+    .brand__title {
+      font-weight: 800;
+      font-size: clamp(34px, 5vw, 56px);
+      color: black;
+    }
+
+    .brand__icon {
+      height: 40px;
+      width: auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .hero__copy h2 {
+      margin: 0 0 8px 0;
+      font-weight: 800;
+      font-size: 40px;
+      color: #000;
+    }
+
+    .hero__copy p {
+      margin: 0;
+      font-weight: 800;
+      font-size: 24px;
+      color: #000;
+    }
+
+    .cta {
+      margin-top: 28px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 26px;
+      font-weight: 600;
+      font-size: 18px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 200px;
+      box-shadow: var(--btn-shadow);
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* 👇 Efeito de clique (pressionado) */
+    .btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .hero__art {
+      justify-self: end;
+      width: min(520px, 100%);
+      aspect-ratio: 4 / 5;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .06);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero__art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .cta {
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -57,10 +162,17 @@
     
 
     <section class="hero">
+
+      <div class="hero__copy">
+        <h2>Simples, flexível e poderoso.</h2>
+        <p>Mantenha suas tarefas, projetos e metas em um só lugar. Organize seu dia, alcance sua produtividade máxima.</p>
+        <div class="cta">
+
         <div class="hero__copy">
         <h2>Simples, flexível e poderoso.</h2>
         <p>Mantenha suas tarefas, projetos e metas em um só lugar. Organize seu dia, alcance sua produtividade máxima.</p> 
         <div class="cta">
+
           <a class="btn" href="{{ route('login') }}">Iniciar Sessão</a>
           <a class="btn" href="{{ route('cadastro') }}">Criar Conta</a>
         </div>

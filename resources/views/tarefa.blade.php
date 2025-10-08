@@ -114,8 +114,8 @@
       </main>
 </body>
 
-<<<<<<< HEAD
+
 </html>
-=======
+
 </html>
->>>>>>> 014e2af1203aec2a35905e02c7c9f7e9c18df02f
+

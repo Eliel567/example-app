@@ -38,13 +38,19 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 | Rotas Protegidas (precisam de login)
 |--------------------------------------------------------------------------
+| Usamos o 'auth' middleware padrão para proteger essas rotas.
 */
-Route::middleware('auth.session')->group(function () {
+Route::middleware('auth')->group(function () {
 
     // Tela do App (lista de tarefas)
     Route::get('/app', [TarefaController::class, 'index'])->name('app.index');
 
-    // Tarefas 
+    // Tarefas - Formulário de Criação (GET)
     Route::get('/tarefa/nova', [TarefaController::class, 'create'])->name('tarefa.nova');
+    
+    // Tarefas - Salvar no Banco (POST)
     Route::post('/tarefa/salvar', [TarefaController::class, 'store'])->name('tarefa.salvar');
+    
+    // NOVO: Rota para DELETAR a tarefa
+    Route::delete('/tarefa/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.deletar');
 });

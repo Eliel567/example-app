@@ -17,15 +17,13 @@ class AuthController extends Controller
     public function processaCadastro(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
 
         $user = User::create([
-            'name'     => $request->name,
             'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make( $request->password),
         ]);
 
         Auth::login($user);
@@ -42,7 +40,7 @@ class AuthController extends Controller
     {
         $credenciais = $request->validate([
             'email'    => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:6'
         ]);
 
         if (Auth::attempt($credenciais)) {

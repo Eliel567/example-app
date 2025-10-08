@@ -28,7 +28,7 @@
     <form action="{{ route('login.processa') }}" method="POST">
       @csrf
       <input class="input" type="email" name="email" placeholder="E-mail" required>
-      <input class="input" type="password" name="senha" placeholder="Senha" required>
+      <input class="input" type="password" name="password" placeholder="Senha" required>
       <button class="btn" type="submit">Conecte-se</button>
     </form>
   </div>

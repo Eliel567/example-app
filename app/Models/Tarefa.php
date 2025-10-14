@@ -4,37 +4,43 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User; // Importa o Model User
 
+/**
+ * Representa uma tarefa do usuário na aplicação Infinite.
+ */
 class Tarefa extends Model
 {
     use HasFactory;
 
     /**
-     * Os atributos que são mass assignable (atribuíveis em massa).
+     * Os atributos que podem ser preenchidos em massa (mass assignable).
+     * Inclui o user_id para vincular a tarefa ao usuário.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
-        'user_id', 
+        'user_id',
         'titulo',
+        'descricao',
         'prazo',
-        'concluida', // NOVO: Campo para controlar o status da tarefa
+        'concluida',
     ];
 
     /**
      * Os atributos que devem ser convertidos para tipos nativos.
+     * O campo 'concluida' deve ser sempre um booleano.
+     *
+     * @var array<string, string>
      */
     protected $casts = [
-        'prazo' => 'date',       // Opcional: Garante que 'prazo' é um objeto de data
-        'concluida' => 'boolean', // NOVO: Garante que 'concluida' seja tratado como booleano (true/false)
-    ];
-    
-    // Opcional: Adicionar um valor padrão para 'concluida' se não for passado no create
-    protected $attributes = [
-        'concluida' => false,
+        'concluida' => 'boolean',
+        'prazo' => 'date', // Converte a data do banco para objeto Carbon/PHP
     ];
 
     /**
-     * Relacionamento: Uma tarefa pertence a um usuário.
+     * Define o relacionamento: Uma Tarefa pertence a um Usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {

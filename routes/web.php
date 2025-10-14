@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     // Tela do App (lista de tarefas) - READ (L)
     Route::get('/app', [TarefaController::class, 'index'])->name('app.index');
 
+
     // Tarefas - Formulário de Criação (GET) - CREATE (C)
     Route::get('/tarefa/nova', [TarefaController::class, 'create'])->name('tarefa.nova');
     
@@ -65,5 +66,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/tarefa/{tarefa}/concluir', [TarefaController::class, 'toggleConcluida'])->name('tarefa.concluir');
     
     // Rota para DELETAR a tarefa (DELETE) - DELETE (D)
+
+    // Tarefas - Formulário de Criação (GET)
+    Route::get('/tarefa/nova', [TarefaController::class, 'create'])->name('tarefa.nova');
+    
+    // Tarefas - Salvar no Banco (POST)
+    Route::post('/tarefa/salvar', [TarefaController::class, 'store'])->name('tarefa.salvar');
+    
+    // NOVO: Rota para DELETAR a tarefa
+
     Route::delete('/tarefa/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.deletar');
 });

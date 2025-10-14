@@ -107,6 +107,7 @@
       transform: scale(0.96);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+    
     .hero__art {
       justify-self: end;
       width: min(520px, 100%);
@@ -135,6 +136,7 @@
         justify-content: center;
       }
     }
+
   </style>
 </head>
 <body>

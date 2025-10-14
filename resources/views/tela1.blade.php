@@ -2,18 +2,18 @@
 <html lang="pt-br">
 
 <head>
-   
+  
   <meta charset="UTF-8" />
-   
+  
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Infinite</title>
-   
+     <title>Infinite</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-   
+  
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   
+  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
+     <style>
     /* Reset e Base */
     * {
       box-sizing: border-box;
@@ -122,18 +122,19 @@
 </head>
 
 <body>
-    <div class="hero-container">
-        <div class="brand" role="banner">
-            <span class="brand__title">Infinite</span>
-            <img src="{{ asset('Image/Infinite.png') }}" alt="Logo Infinite" class="brand__logo">
-          </div>
-       
-        <p class="tagline">Organize suas ideias, gerencie seu tempo. Simplifique sua vida.</p>
+    <div class="hero-container">
+       <div class="brand" role="banner">
+            <span class="brand__title">Infinite</span>
+            <img src="{{ asset('Image/Infinite.png') }}" alt="Logo Infinite" class="brand__logo">
+           </div>
+    
+         <p class="tagline">Organize suas ideias, gerencie seu tempo. Simplifique sua vida.</p>
 
-        <a href="{{ route('tela2') }}" class="cta-button">
-            Começar Agora →
-          </a>
-      </div>
+           <a href="{{ route('tela2') }}" class="cta-button">
+           Começar Agora →
+           </a>
+       </div>
 </body>
-
 </html>
+</html>
+

@@ -2,6 +2,7 @@
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinite - Tarefas</title>
@@ -279,7 +280,6 @@
         </div>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            {{-- Removendo o style inline para usar a classe CSS recém-criada --}}
             <button type="submit">Sair</button>
         </form>
     </header>
@@ -297,19 +297,19 @@
         <div class="filter-bar">
             {{-- Filtro 'Todas' (Sem parâmetro de status) --}}
             <a href="{{ route('app.index') }}" 
-               class="filter-btn @if(is_null($status)) active @endif">
+                class="filter-btn @if(is_null($status)) active @endif">
                 Todas
             </a>
 
             {{-- Filtro 'Pendentes' (status=pendente) --}}
             <a href="{{ route('app.index', ['status' => 'pendente']) }}" 
-               class="filter-btn @if($status === 'pendente') active @endif">
+                class="filter-btn @if($status === 'pendente') active @endif">
                 Pendentes
             </a>
 
             {{-- Filtro 'Concluídas' (status=concluida) --}}
             <a href="{{ route('app.index', ['status' => 'concluida']) }}" 
-               class="filter-btn @if($status === 'concluida') active @endif">
+                class="filter-btn @if($status === 'concluida') active @endif">
                 Concluídas
             </a>
         </div>
@@ -357,7 +357,7 @@
                                     style="display:inline;">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="complete-btn">
+                                    <button type="submit" class="complete-btn" title="@if($tarefa->concluida) Reabrir Tarefa @else Marcar como Concluída @endif">
                                         @if($tarefa->concluida)
                                             Reabrir
                                         @else
@@ -367,7 +367,7 @@
                                 </form>
 
                                 {{-- BOTÃO EDITAR --}}
-                                <a href="{{ route('tarefa.editar', $tarefa->id) }}" class="edit-btn">
+                                <a href="{{ route('tarefa.editar', $tarefa->id) }}" class="edit-btn" title="Editar Tarefa">
                                     Editar
                                 </a>
 
@@ -378,7 +378,7 @@
                                     @method('DELETE')
                                     <button type="submit"
                                         onclick="return confirm('Tem certeza que deseja excluir esta tarefa?')"
-                                        class="delete-btn">
+                                        class="delete-btn" title="Excluir Tarefa">
                                         Deletar
                                     </button>
                                 </form>
@@ -394,8 +394,9 @@
     </main>
 
     <footer>
-        <a href="{{ route('tarefa.nova') }}" class="fab">+</a>
+        <a href="{{ route('tarefa.nova') }}" class="fab" title="Nova Tarefa">+</a>
     </footer>
+
 </body>
 
 </html>

@@ -2,12 +2,12 @@
 <html lang="pt-br">
 
 <head>
-   
+  
   <meta charset="UTF-8">
-   
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova Tarefa</title>
-    <style>
+    <title>Nova Tarefa</title>
+    <style>
     body {
       margin: 0;
       padding: 0;
@@ -89,29 +89,34 @@
       font-size: 24px;
       cursor: pointer;
     }
+
   </style>
 </head>
 
 <body>
-    <header>
-        <a href="{{ route('app.index') }}">←</a>
-        Nova tarefa
-      </header>
+     <header>
+       <a href="{{ route('app.index') }}">←</a>
+       Nova tarefa
+       </header>
 
-    <main>
-        <form action="{{ route('tarefa.salvar') }}" method="POST">
-            @csrf
-            <label for="tarefa">O que deve ser feito?</label>
-            <input type="text" id="tarefa" name="titulo" placeholder="Insira sua nova tarefa aqui" required>
+     <main>
+       <form action="{{ route('tarefa.salvar') }}" method="POST">
+           @csrf
+            <label for="tarefa">O que deve ser feito?</label>
+            <input type="text" id="tarefa" name="titulo" placeholder="Insira sua nova tarefa aqui" required>
 
-            <label for="prazo">Prazo</label>
-            <div class="prazo">
-                <input type="date" id="prazo" name="prazo">
-              </div>
+            <label for="prazo">Prazo</label>
+            <div class="prazo">
+               <input type="date" id="prazo" name="prazo">
+               </div>
 
-            <button type="submit" class="check-btn">✔</button>
-          </form>
-      </main>
+           <button type="submit" class="check-btn">✔</button>
+           </form>
+     </main>
 </body>
 
+
 </html>
+
+</html>
+
